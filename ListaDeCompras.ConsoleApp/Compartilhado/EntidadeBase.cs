@@ -2,7 +2,7 @@ using System.Security.Cryptography;
 
 namespace ListaDeCompras.ConsoleApp.Compartilhado;
 
-public abstract class EntidadeBase
+public abstract class EntidadeBase : object 
 {
     public string Id { get; set; } = string.Empty;
 

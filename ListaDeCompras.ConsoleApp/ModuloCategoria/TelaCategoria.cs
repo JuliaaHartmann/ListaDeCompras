@@ -1,3 +1,4 @@
+using System.Collections;
 using ListaDeCompras.ConsoleApp.Compartilhado;
 
 namespace ListaDeCompras.ConsoleApp.ModuloCategoria;
@@ -6,7 +7,7 @@ public class TelaCategoria : TelaBase
 {
     public TelaCategoria(RepositorioBase repositorio) : base("Categoria", repositorio)
     {
-        
+
     }
 
     public override void VisualizarTodos(bool deveExibirCabecalho)
@@ -14,20 +15,24 @@ public class TelaCategoria : TelaBase
         if (deveExibirCabecalho)
             ExibirCabecalho("Visualização de Categorias");
 
+        ArrayList categorias = repositorio.SelecionarTodos();
+
+        if (categorias.Count == 0)
+        {
+            Console.Write("Não existe nenhum registro.");
+            Console.WriteLine("---------------------------------");
+            Console.Write("Digite ENTER para continuar...");
+            Console.ReadLine();
+            return;
+        }
+
         Console.WriteLine(
             "{0, -7} | {1, -20} | {2, -10}",
             "Id", "Nome", "Cor"
         );
 
-        EntidadeBase?[] categoria = repositorio.SelecionarTodos();
-
-        for (int i = 0; i < categoria.Length; i++)
+        foreach (Categoria c in categorias)
         {
-            Categoria? c = (Categoria?)categoria[i];
-
-            if (c == null)
-                continue;
-
             string corSelecionada = c.Cor;
 
             if (corSelecionada == "Vermelho")
@@ -43,6 +48,15 @@ public class TelaCategoria : TelaBase
                 "{0, -7} | {1, -20} | {2, -10}",
                 c.Id, c.Nome, c.Cor
             );
+        }
+
+        Console.ResetColor();
+
+        if (deveExibirCabecalho)
+        {
+            Console.WriteLine("---------------------------------");
+            Console.Write("Digite ENTER para continuar...");
+            Console.ReadLine();
         }
     }
 
