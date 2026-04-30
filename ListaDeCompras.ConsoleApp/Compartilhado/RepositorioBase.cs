@@ -1,20 +1,17 @@
-using System.Collections;
-
 namespace ListaDeCompras.ConsoleApp.Compartilhado;
 
-public abstract class RepositorioBase
+public abstract class RepositorioBase<T> where T : EntidadeBase
 {
-    // protected EntidadeBase?[] registros = new EntidadeBase[100];
-    protected ArrayList registros = new ArrayList();
+    protected List<T> registros = new List<T>();
 
-    public void Cadastrar(EntidadeBase entidade)
+    public void Cadastrar(T entidade)
     {
         registros.Add(entidade);
     }
 
-    public bool Editar(string idSelecionado, EntidadeBase entidadeAtualizada)
+    public bool Editar(string idSelecionado, T entidadeAtualizada)
     {
-        EntidadeBase? registroSelecionado = SelecionarPorId(idSelecionado);
+        T? registroSelecionado = SelecionarPorId(idSelecionado);
 
         if (registroSelecionado == null)
             return false;
@@ -27,7 +24,7 @@ public abstract class RepositorioBase
     public bool Excluir(string idSelecionado)
     {
 
-        EntidadeBase? registroSelecionado = SelecionarPorId(idSelecionado); 
+        T? registroSelecionado = SelecionarPorId(idSelecionado); 
 
         if (registroSelecionado == null)
             return false;
@@ -37,9 +34,9 @@ public abstract class RepositorioBase
         return true;
     }
 
-    public EntidadeBase? SelecionarPorId(string idSelecionado)
+    public T? SelecionarPorId(string idSelecionado)
     {
-        foreach (EntidadeBase registro in registros)
+        foreach (T registro in registros)
         {
             if (registro.Id == idSelecionado)
                 return registro;
@@ -48,7 +45,7 @@ public abstract class RepositorioBase
         return null;
     }
 
-    public ArrayList SelecionarTodos()
+    public List<T> SelecionarTodos()
     {
         return registros;
     }

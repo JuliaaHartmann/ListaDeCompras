@@ -1,11 +1,11 @@
 namespace ListaDeCompras.ConsoleApp.Compartilhado;
 
-public abstract class TelaBase : ITela
+public abstract class TelaBase<T> where T : EntidadeBase
 {
     public string nomeEntidade = string.Empty;
-    protected RepositorioBase repositorio;
+    protected RepositorioBase<T> repositorio;
 
-    protected TelaBase(string nomeEntidade, RepositorioBase repositorio)
+    protected TelaBase(string nomeEntidade, RepositorioBase<T> repositorio)
     {
         this.nomeEntidade = nomeEntidade;
         this.repositorio = repositorio;
@@ -35,7 +35,7 @@ public abstract class TelaBase : ITela
     {
         ExibirCabecalho($"Cadastro de {nomeEntidade}");
 
-        EntidadeBase novaEntidade = ObterDadosCadastrais();
+        T novaEntidade = ObterDadosCadastrais();
 
         string[] erros = novaEntidade.Validar();
 
@@ -87,7 +87,7 @@ public abstract class TelaBase : ITela
 
         Console.WriteLine("---------------------------------");
 
-        EntidadeBase novaEntidade = ObterDadosCadastrais();
+        T novaEntidade = ObterDadosCadastrais();
 
         string[] erros = novaEntidade.Validar();
 
@@ -155,6 +155,7 @@ public abstract class TelaBase : ITela
     }
 
     public abstract void VisualizarTodos(bool deveExibirCabecalho);
+    protected abstract T ObterDadosCadastrais();
 
     protected void ExibirCabecalho(string titulo)
     {
@@ -174,6 +175,4 @@ public abstract class TelaBase : ITela
         Console.Write("Digite ENTER para continuar...");
         Console.ReadLine();
     }
-
-    protected abstract EntidadeBase ObterDadosCadastrais();
 }
