@@ -15,7 +15,7 @@ public abstract class TelaBase<T> where T : EntidadeBase
     {
         string nomeMinusculo = nomeEntidade.ToLower();
 
-        Console.Clear();
+        // Console.Clear();
         Console.WriteLine("---------------------------------");
         Console.WriteLine($"Gestão de {nomeEntidade}");
         Console.WriteLine("---------------------------------");

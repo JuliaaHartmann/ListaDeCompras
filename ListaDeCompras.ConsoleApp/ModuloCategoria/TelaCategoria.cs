@@ -7,7 +7,7 @@ public class TelaCategoria : TelaBase<Categoria>, ITelaOpcoes, ITelaCrud
 {
     public TelaCategoria(RepositorioCategoria repositorio) : base("Categoria", repositorio)
     {
-
+        
     }
 
     public override void VisualizarTodos(bool deveExibirCabecalho)
