@@ -1,5 +1,3 @@
-using System;
-using System.Dynamic;
 using ListaDeCompras.ConsoleApp.Compartilhado;
 using ListaDeCompras.ConsoleApp.ModuloCategoria;
 
@@ -19,27 +17,29 @@ public class Produto : EntidadeBase
         ValorAproximado = valorAproximado;
         Categoria = categoria;
     }
-    public override void AtualizarDados(EntidadeBase entidadeAtualizada)
+    public override List<string> Validar()
     {
-        throw new NotImplementedException();
-    }
-
-    public override string[] Validar()
-    {
-        string erros = string.Empty;
+        List<string> erros = new List<string>();
 
         if (Nome.Length < 2 || Nome.Length > 100)
-            erros += "O campo \"Nome\" deve conter entre 2 e 100 caracteres;";
+            erros.Add("O campo \"Nome\" deve conter entre 2 e 100 caracteres.");
 
         if (string.IsNullOrWhiteSpace(UnidadeMedida))
-            erros += "O campo \"Unidade de Medida\" deve ser preenchido;";
+            erros.Add("O campo \"Unidade de Medida\" deve ser preenchido.");
 
-        if (ValorAproximado <= 0)
-            erros += "O campo \"Valor Aproximado\" deve ser maior que zero;";
+        if (ValorAproximado == 0)
+            erros.Add("O campo \"Preço Aproximado\" deve ser preenchido.");
 
-        if (Categoria == null)
-            erros += "O campo \"Categoria\" é obrigatório;";
-
-        return erros.Split(';', StringSplitOptions.RemoveEmptyEntries);
+        return erros;
     }
+    public override void AtualizarDados(EntidadeBase entidadeAtualizada)
+    {
+        Produto produtoAtualizado = (Produto)entidadeAtualizada;
+        
+        Nome = produtoAtualizado.Nome;
+        UnidadeMedida = produtoAtualizado.UnidadeMedida;
+        ValorAproximado = produtoAtualizado.ValorAproximado;
+        Categoria = produtoAtualizado.Categoria;
+    }
+
 }

@@ -1,5 +1,3 @@
-using System;
-
 namespace ListaDeCompras.ConsoleApp.Compartilhado;
 
 public interface ITelaCrud

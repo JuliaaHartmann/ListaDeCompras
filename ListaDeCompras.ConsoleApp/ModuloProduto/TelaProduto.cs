@@ -1,16 +1,13 @@
-using System.Collections;
-using System.Net;
-using System.Reflection.Metadata.Ecma335;
 using ListaDeCompras.ConsoleApp.Compartilhado;
 using ListaDeCompras.ConsoleApp.ModuloCategoria;
-using ListaDeCompras.ConsoleApp.ModuloProduto;
 
 namespace ListaDeCompras.ConsoleApp.ModuloProduto;
 
 public class TelaProduto : TelaBase<Produto>, ITelaOpcoes, ITelaCrud
 {
-    private RepositorioCategoria repositorioCategoria;
-    public TelaProduto(RepositorioProduto repositorio, RepositorioCategoria repositorioCategoria) : base("Produto", repositorio)
+    private readonly RepositorioCategoria repositorioCategoria;
+
+    public TelaProduto(RepositorioProduto repositorioProduto, RepositorioCategoria repositorioCategoria) : base("Produto", repositorioProduto)
     {
         this.repositorioCategoria = repositorioCategoria;
     }
@@ -22,48 +19,17 @@ public class TelaProduto : TelaBase<Produto>, ITelaOpcoes, ITelaCrud
 
         List<Produto> produtos = repositorio.SelecionarTodos();
 
-        if (produtos.Count == 0)
-        {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("Não existe nenhum registro de produto.");
-            Console.ResetColor();
-            Console.WriteLine("---------------------------------");
-            Console.Write("Digite ENTER para continuar...");
-            Console.ReadLine();
-            return;
-        }
-
         Console.WriteLine(
-            "{0, -7} | {1, -20} | {2, -10} | {3, -10} | {4, -10}",
-            "Id", "Nome", "Categoria", "Unidade", "Preço"
+            "{0, -7} | {1, -30} | {2, -15} | {3, -20} | {4, -15}",
+            "Id", "Nome", "Medida", "Valor Aproximado", "Categoria"
         );
 
         foreach (Produto p in produtos)
         {
             Console.WriteLine(
-               "{0, -7} | {1, -20} | {2, -10} | {3, -10} | {4, -10}",
-                 p.Id, p.Nome, p.Categoria.Nome, p.UnidadeMedida, p.ValorAproximado
-        );
-
-            Console.Write("{0, -7} | ", p.Id);
-            Console.Write("{0, -20} | ", p.Nome);
-
-            string corCategoria = p.Categoria.Cor;
-
-            if (corCategoria == "Vermelho")
-                Console.ForegroundColor = ConsoleColor.Red;
-
-            else if (corCategoria == "Verde")
-                Console.ForegroundColor = ConsoleColor.Green;
-
-            else if (corCategoria == "Azul")
-                Console.ForegroundColor = ConsoleColor.Blue;
-
-            Console.Write("{0, -10} | ", p.Categoria.Nome);
-            Console.ResetColor();
-
-            Console.Write("{0, -10} | ", p.UnidadeMedida);
-            Console.Write("{0, -10} | ", p.ValorAproximado);
+                "{0, -7} | {1, -30} | {2, -15} | {3, -20} | {4, -15}",
+                p.Id, p.Nome, p.UnidadeMedida, p.ValorAproximado.ToString("C2"), p.Categoria.Nome
+            );
         }
 
         if (deveExibirCabecalho)
@@ -79,43 +45,43 @@ public class TelaProduto : TelaBase<Produto>, ITelaOpcoes, ITelaCrud
         Console.Write("Digite o nome do produto: ");
         string nome = Console.ReadLine() ?? string.Empty;
 
-        // string? idCategoria = SelecionarCategorias();
+        Console.Write("Digite a unidade de medida do produto (ex: 2 lt, 5 kg): ");
+        string unidadeMedida = Console.ReadLine() ?? string.Empty;
 
-        // if (idCategoria == null)
-        // {
-        //     Console.ForegroundColor = ConsoleColor.Yellow;
-        //     Console.Write("Não existe nenhum registro.");
-        //     Console.ResetColor();
-        //     Console.WriteLine("---------------------------------");
-        //     Console.Write("Digite ENTER para continuar...");
-        //     Console.ReadLine();
-        //     return;????????
-        // }
-        // Console.Write("Digite o ID da categoria do produto: ");
+        Console.Write("Digite o valor aproximado do produto em R$: ");
+        decimal valorAproximado = Convert.ToDecimal(Console.ReadLine());
 
-        // Categoria? categoriaSelecionada = (Categoria?)repositorioCategoria.SelecionarPorId(idCategoria);
+        Categoria? categoriaSelecionada;
 
-        // if (categoriaSelecionada == null)
-        //     throw new NullReferenceException("Não foi possível obter o registro selecionado {Caixa}.");
+        do
+        {
+            Console.WriteLine("---------------------------------");
+            VisualizarCategorias();
+            Console.WriteLine("---------------------------------");
 
-        // return new Revista(titulo, numeroEdicao, anoPublicacao, caixaSelecionada);
+            Console.Write("Digite o Id da categoria do produto: ");
+            string idSelecionado = Console.ReadLine() ?? string.Empty;
 
-        Console.Write("Digite a unidade de medida do produto (kg, unidade, litro, caixa): ");
-        string unidadeMedida = Console.ReadLine() ?? string.Empty; // Pode ser assim?
+            categoriaSelecionada = repositorioCategoria.SelecionarPorId(idSelecionado);
 
-        Console.Write("Digite o valor do produto: ");
-        decimal valorAproximado = Convert.ToDecimal(Console.ReadLine()); // Pode ser assim?
+        } while (categoriaSelecionada == null);
 
-
+        return new Produto(nome, unidadeMedida, valorAproximado, categoriaSelecionada);
     }
 
-    private string? SelecionarCategorias()
+    private void VisualizarCategorias()
     {
         List<Categoria> categorias = repositorioCategoria.SelecionarTodos();
 
         if (categorias.Count == 0)
         {
-            return null;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Não existe nenhum registro.");
+            Console.ResetColor();
+            Console.WriteLine("---------------------------------");
+            Console.Write("Digite ENTER para continuar...");
+            Console.ReadLine();
+            return;
         }
 
         Console.WriteLine(
@@ -125,15 +91,15 @@ public class TelaProduto : TelaBase<Produto>, ITelaOpcoes, ITelaCrud
 
         foreach (Categoria c in categorias)
         {
-            string corSelecionada = c.Cor;
+            CorCategoria corSelecionada = c.Cor;
 
-            if (corSelecionada == "Vermelho")
+            if (corSelecionada == CorCategoria.Vermelha)
                 Console.ForegroundColor = ConsoleColor.Red;
 
-            else if (corSelecionada == "Verde")
+            else if (corSelecionada == CorCategoria.Verde)
                 Console.ForegroundColor = ConsoleColor.Green;
 
-            else if (corSelecionada == "Azul")
+            else if (corSelecionada == CorCategoria.Azul)
                 Console.ForegroundColor = ConsoleColor.Blue;
 
             Console.WriteLine(
@@ -143,20 +109,5 @@ public class TelaProduto : TelaBase<Produto>, ITelaOpcoes, ITelaCrud
         }
 
         Console.ResetColor();
-
-        Console.WriteLine("---------------------------------");
-
-        string? idSelecionado;
-
-        do
-        {
-            Console.Write("Digite o ID da categoria:  ");
-            idSelecionado = Console.ReadLine();
-
-            if (!string.IsNullOrWhiteSpace(idSelecionado) && idSelecionado.Length == 7)
-                break;
-        } while (true);
-
-        return idSelecionado;
     }
 }

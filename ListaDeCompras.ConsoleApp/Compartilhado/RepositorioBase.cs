@@ -1,6 +1,6 @@
 namespace ListaDeCompras.ConsoleApp.Compartilhado;
 
-public abstract class RepositorioBase<T> where T : EntidadeBase
+public abstract class RepositorioBase<T> where T : EntidadeBase 
 {
     protected List<T> registros = new List<T>();
 
@@ -21,14 +21,18 @@ public abstract class RepositorioBase<T> where T : EntidadeBase
         return true;
     }
 
+    public bool Excluir(T registro)
+    {
+        return registros.Remove(registro);
+    }
+
     public bool Excluir(string idSelecionado)
     {
-
-        T? registroSelecionado = SelecionarPorId(idSelecionado); 
+        T? registroSelecionado = SelecionarPorId(idSelecionado);
 
         if (registroSelecionado == null)
             return false;
-        
+
         registros.Remove(registroSelecionado);
 
         return true;
