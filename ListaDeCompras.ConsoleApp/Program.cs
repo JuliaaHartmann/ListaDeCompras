@@ -37,6 +37,18 @@ while (true)
 
             else if (opcaoSubMenu == "4")
                 telaCrud.VisualizarTodos(deveExibirCabecalho: true);
+
+            if (telaCrud is TelaListaCompras telaListaCompras)
+            {
+                if (opcaoSubMenu == "5")
+                    telaListaCompras.AdicionarItem();
+                
+                else if (opcaoSubMenu == "6")
+                    telaListaCompras.RemoverItem();
+                
+                else if (opcaoSubMenu == "7")
+                    telaListaCompras.VisualizarItens();
+            }
         }
     }
 }
