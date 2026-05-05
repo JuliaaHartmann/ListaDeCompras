@@ -3,7 +3,7 @@
 ![](./.docs/listadecompras.gif)
 
 Maria faz as compras da família toda semana, mas sempre esquece algum item ou compra coisas que já tem em casa.  
-Para resolver esse problema, foi criado o sistema **Lista de Compras**, uma aplicação simples para cadastrar produtos, organizar listas e registrar as compras realizadas.  
+Para resolver esse problema, foi criado o sistema **Lista de Compras**, uma aplicação simples para cadastrar produtos, organizar listas e registrar as compras realizadas.    
 
 Os alunos da Academia do Programador foram contratados para desenvolver essa aplicação.
 
