@@ -1,26 +1,10 @@
 ﻿using System.Text.Json;
 using ListaDeCompras.ConsoleApp.Compartilhado;
+using ListaDeCompras.ConsoleApp.Compartilhado.Arquivos;
 using ListaDeCompras.ConsoleApp.ModuloCategoria;
 using ListaDeCompras.ConsoleApp.ModuloListaCompras;
+using ListaDeCompras.ConsoleApp.ModuloProduto;
 using ListaDeCompras.ConsoleApp.Utilidades;
-
-string caminhoDownloads = "C:\\Users\\julia\\Downloads";
-string caminhoArquivo = caminhoDownloads + "\\categoria.json";
-
-Categoria categoria = new Categoria("Café", CorCategoria.Vermelha);
-Categoria categoria2 = new Categoria("Padaria", CorCategoria.Branca);
-
-List<Categoria> categorias = [categoria, categoria2];
-
-JsonSerializerOptions opcoesJson = new JsonSerializerOptions();
-opcoesJson.WriteIndented = true;
-opcoesJson.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-
-string jsonString = JsonSerializer.Serialize(categorias, opcoesJson);
-
-File.WriteAllText(caminhoArquivo, jsonString);
-
-return;
 
 TelaPrincipal telaPrincipal = new TelaPrincipal();
 

@@ -5,15 +5,19 @@ namespace ListaDeCompras.ConsoleApp.ModuloListaCompras;
 
 public class ItemListaCompras
 {
-    public string Id { get; private set; }
-    public Produto Produto { get; private set; }
-    public int Quantidade { get; private set; }
+    public string Id { get; set; }
+    public Produto Produto { get; set; }
+    public int Quantidade { get; set; }
     public decimal Valor
     {
         get
         {
             return Produto.ValorAproximado * Quantidade;
         }
+    }
+
+    public ItemListaCompras()
+    {        
     }
 
     public ItemListaCompras(Produto produto, int quantidade)
