@@ -1,4 +1,4 @@
-﻿using ListaDeCompras.ConsoleApp.Compartilhado;
+﻿﻿using ListaDeCompras.ConsoleApp.Compartilhado;
 using ListaDeCompras.ConsoleApp.Compartilhado.Arquivos;
 using ListaDeCompras.ConsoleApp.ModuloCategoria;
 using ListaDeCompras.ConsoleApp.ModuloListaCompras;
@@ -8,12 +8,19 @@ using ListaDeCompras.ConsoleApp.Utilidades;
 ContextoJson contexto = new ContextoJson();
 contexto.Carregar();
 
+// RepositorioCategoriaEmMemoria repositorioCategoria = new RepositorioCategoriaEmMemoria();
+// RepositorioProdutoEmMemoria repositorioProduto = new RepositorioProdutoEmMemoria();
+// RepositorioListaComprasEmMemoria repositorioListaCompras = new RepositorioListaComprasEmMemoria();
+
 RepositorioCategoriaEmArquivo repositorioCategoria = new RepositorioCategoriaEmArquivo(contexto);
 RepositorioProdutoEmArquivo repositorioProduto = new RepositorioProdutoEmArquivo(contexto);
 RepositorioListaComprasEmArquivo repositorioListaCompras = new RepositorioListaComprasEmArquivo(contexto);
-return;
 
-TelaPrincipal telaPrincipal = new TelaPrincipal();
+TelaPrincipal telaPrincipal = new TelaPrincipal(
+    repositorioCategoria,
+    repositorioProduto,
+    repositorioListaCompras
+);
 
 while (true)
 {
@@ -49,14 +56,14 @@ while (true)
             else if (opcaoSubMenu == "4")
                 telaCrud.VisualizarTodos(deveExibirCabecalho: true);
 
-            if (telaCrud is TelaListaCompras telaListaCompras)
+            else if (telaCrud is TelaListaCompras telaListaCompras)
             {
                 if (opcaoSubMenu == "5")
                     telaListaCompras.AdicionarItem();
-                
+
                 else if (opcaoSubMenu == "6")
                     telaListaCompras.RemoverItem();
-                
+
                 else if (opcaoSubMenu == "7")
                     telaListaCompras.VisualizarItens();
             }
